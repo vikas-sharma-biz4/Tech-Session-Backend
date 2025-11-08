@@ -1,0 +1,45 @@
+{
+  "name": "auth-backend",
+  "version": "1.0.0",
+  "description": "Authentication backend API",
+  "main": "dist/App.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/App.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/App.ts",
+    "db:init": "ts-node src/scripts/init-db.ts",
+    "db:sync": "ts-node src/scripts/sync-db.ts",
+    "db:reset": "ts-node src/scripts/sync-db.ts --force",
+    "db:migrate": "ts-node src/scripts/add-google-id-column.ts",
+    "db:alter-password": "ts-node src/scripts/alter-password-column.ts"
+  },
+  "dependencies": {
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.17",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.7",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.10.6",
+    "@types/nodemailer": "^6.4.14",
+    "@types/pg": "^8.10.9",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}
