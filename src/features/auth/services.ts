@@ -1,10 +1,19 @@
 import User from './models/UserModel';
 import bcrypt from 'bcryptjs';
-import { UserAttributes, UserPublic, OTPVerificationResult, UserUpdateAttributes } from '../../types';
+import {
+  UserAttributes,
+  UserPublic,
+  OTPVerificationResult,
+  UserUpdateAttributes,
+} from '../../types';
 import { IUserService } from './interfaces';
 
 class UserService implements IUserService {
-  async createUser(userData: { name: string; email: string; password: string }): Promise<UserPublic> {
+  async createUser(userData: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<UserPublic> {
     const existingUser = await User.findOne({ where: { email: userData.email } });
     if (existingUser) {
       throw new Error('User already exists with this email');
@@ -19,11 +28,15 @@ class UserService implements IUserService {
       password: hashedPassword,
     });
 
-    const { password: _, ...userWithoutPassword } = user.toJSON() as UserAttributes;
+    const { password: _, ...userWithoutPassword } = user.toJSON();
     return userWithoutPassword as UserPublic;
   }
 
-  async createOAuthUser(userData: { name: string; email: string; googleId: string }): Promise<UserAttributes> {
+  async createOAuthUser(userData: {
+    name: string;
+    email: string;
+    googleId: string;
+  }): Promise<UserAttributes> {
     const existingUser = await User.findOne({ where: { email: userData.email } });
     if (existingUser) {
       throw new Error('User already exists with this email');
@@ -32,26 +45,26 @@ class UserService implements IUserService {
     const user = await User.create({
       name: userData.name,
       email: userData.email,
-      password: null, // OAuth users don't need a password
+      password: undefined, // OAuth users don't need a password
       googleId: userData.googleId,
     });
 
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async findByGoogleId(googleId: string): Promise<UserAttributes | null> {
     const user = await User.findOne({ where: { googleId } });
-    return user ? (user.toJSON() as UserAttributes) : null;
+    return user ? user.toJSON() : null;
   }
 
   async findByEmail(email: string): Promise<UserAttributes | null> {
     const user = await User.findOne({ where: { email } });
-    return user ? (user.toJSON() as UserAttributes) : null;
+    return user ? user.toJSON() : null;
   }
 
   async findById(id: string): Promise<UserAttributes | null> {
     const user = await User.findByPk(id);
-    return user ? (user.toJSON() as UserAttributes) : null;
+    return user ? user.toJSON() : null;
   }
 
   async updateUser(id: string, updateData: UserUpdateAttributes): Promise<UserAttributes> {
@@ -61,7 +74,7 @@ class UserService implements IUserService {
     }
 
     await user.update(updateData);
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async setResetToken(email: string, token: string, expiry: Date): Promise<UserAttributes> {
@@ -75,7 +88,7 @@ class UserService implements IUserService {
       resetTokenExpiry: expiry,
     });
 
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async clearResetToken(id: string): Promise<UserAttributes> {
@@ -89,7 +102,7 @@ class UserService implements IUserService {
       resetTokenExpiry: null,
     });
 
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async setOTP(email: string, otp: string, expiry: Date): Promise<UserAttributes> {
@@ -103,7 +116,7 @@ class UserService implements IUserService {
       otpExpiry: expiry,
     });
 
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async verifyOTP(email: string, otp: string): Promise<OTPVerificationResult> {
@@ -113,7 +126,7 @@ class UserService implements IUserService {
       return { valid: false, message: 'User not found' };
     }
 
-    const userData = user.toJSON() as UserAttributes;
+    const userData = user.toJSON();
 
     if (!userData.otp) {
       return { valid: false, message: 'No OTP found. Please request a new one.' };
@@ -141,7 +154,7 @@ class UserService implements IUserService {
       otpExpiry: null,
     });
 
-    return user.toJSON() as UserAttributes;
+    return user.toJSON();
   }
 
   async verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
@@ -150,4 +163,3 @@ class UserService implements IUserService {
 }
 
 export default new UserService();
-

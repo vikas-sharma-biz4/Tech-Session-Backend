@@ -3,17 +3,32 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { settings } from '../../config/settings';
 import userService from './services';
-import { generateOTP, sendOTPEmail, sendSignupOTPEmail, sendWelcomeEmail } from '../../utils/emailService';
-import { AuthRequest, SignupRequest, LoginRequest, ForgotPasswordRequest, VerifyOTPRequest, ResetPasswordWithOTPRequest } from '../../interfaces/auth.interface';
-import { UserPublic, AuthResponse, ApiResponse, UserAttributes } from '../../types';
+import {
+  generateOTP,
+  sendOTPEmail,
+  sendSignupOTPEmail,
+  sendWelcomeEmail,
+} from '../../utils/emailService';
+import {
+  AuthRequest,
+  SignupRequest,
+  LoginRequest,
+  ForgotPasswordRequest,
+  VerifyOTPRequest,
+  ResetPasswordWithOTPRequest,
+} from '../../interfaces/auth.interface';
+import { UserPublic, AuthResponse, ApiResponse } from '../../types';
 import { OTP_EXPIRY_MS, BCRYPT_SALT_ROUNDS } from '../../utils/constants';
 
-export const signup = async (req: AuthRequest, res: Response<AuthResponse | ApiResponse>): Promise<void> => {
+export const signup = async (
+  req: AuthRequest,
+  res: Response<AuthResponse | ApiResponse>
+): Promise<void> => {
   try {
     const { name, email, password } = req.body as SignupRequest;
-    
+
     const existingUser = await userService.findByEmail(email);
-    
+
     if (existingUser) {
       const otp = generateOTP();
       const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MS);
@@ -23,7 +38,9 @@ export const signup = async (req: AuthRequest, res: Response<AuthResponse | ApiR
 
       if (!emailResult.success) {
         console.error('Failed to send signup OTP email:', emailResult.error);
-        res.status(500).json({ message: 'Failed to send verification email. Please try again later.' });
+        res
+          .status(500)
+          .json({ message: 'Failed to send verification email. Please try again later.' });
         return;
       }
 
@@ -44,7 +61,9 @@ export const signup = async (req: AuthRequest, res: Response<AuthResponse | ApiR
 
     if (!emailResult.success) {
       console.error('Failed to send signup OTP email:', emailResult.error);
-      res.status(500).json({ message: 'Failed to send verification email. Please try again later.' });
+      res
+        .status(500)
+        .json({ message: 'Failed to send verification email. Please try again later.' });
       return;
     }
 
@@ -59,7 +78,10 @@ export const signup = async (req: AuthRequest, res: Response<AuthResponse | ApiR
   }
 };
 
-export const login = async (req: AuthRequest, res: Response<AuthResponse | ApiResponse>): Promise<void> => {
+export const login = async (
+  req: AuthRequest,
+  res: Response<AuthResponse | ApiResponse>
+): Promise<void> => {
   try {
     const { email, password } = req.body as LoginRequest;
     const user = await userService.findByEmail(email);
@@ -76,7 +98,9 @@ export const login = async (req: AuthRequest, res: Response<AuthResponse | ApiRe
       return;
     }
 
-    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, { expiresIn: settings.jwt.expiresIn });
+    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, {
+      expiresIn: settings.jwt.expiresIn,
+    });
 
     const userPublic: UserPublic = {
       id: user.id,
@@ -96,7 +120,10 @@ export const login = async (req: AuthRequest, res: Response<AuthResponse | ApiRe
   }
 };
 
-export const forgotPassword = async (req: AuthRequest, res: Response<ApiResponse>): Promise<void> => {
+export const forgotPassword = async (
+  req: AuthRequest,
+  res: Response<ApiResponse>
+): Promise<void> => {
   try {
     const { email } = req.body as ForgotPasswordRequest;
     const user = await userService.findByEmail(email);
@@ -118,9 +145,9 @@ export const forgotPassword = async (req: AuthRequest, res: Response<ApiResponse
       return;
     }
 
-    res.json({ 
+    res.json({
       message: 'OTP sent to your email address',
-      success: true 
+      success: true,
     });
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -148,7 +175,10 @@ export const verifyOTP = async (req: AuthRequest, res: Response<ApiResponse>): P
   }
 };
 
-export const verifySignupOTP = async (req: AuthRequest, res: Response<AuthResponse | ApiResponse>): Promise<void> => {
+export const verifySignupOTP = async (
+  req: AuthRequest,
+  res: Response<AuthResponse | ApiResponse>
+): Promise<void> => {
   try {
     const { email, otp } = req.body as VerifyOTPRequest;
     const result = await userService.verifyOTP(email, otp);
@@ -166,7 +196,9 @@ export const verifySignupOTP = async (req: AuthRequest, res: Response<AuthRespon
       return;
     }
 
-    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, { expiresIn: settings.jwt.expiresIn });
+    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, {
+      expiresIn: settings.jwt.expiresIn,
+    });
 
     sendWelcomeEmail(user.email, user.name).catch((error: Error) => {
       console.error('Failed to send welcome email:', error);
@@ -190,7 +222,10 @@ export const verifySignupOTP = async (req: AuthRequest, res: Response<AuthRespon
   }
 };
 
-export const resetPasswordWithOTP = async (req: AuthRequest, res: Response<ApiResponse>): Promise<void> => {
+export const resetPasswordWithOTP = async (
+  req: AuthRequest,
+  res: Response<ApiResponse>
+): Promise<void> => {
   try {
     const { email, otp, password } = req.body as ResetPasswordWithOTPRequest;
     const result = await userService.verifyOTP(email, otp);
@@ -211,9 +246,11 @@ export const resetPasswordWithOTP = async (req: AuthRequest, res: Response<ApiRe
   }
 };
 
-export const resetPassword = async (req: AuthRequest, res: Response<ApiResponse>): Promise<void> => {
+export const resetPassword = async (
+  _req: AuthRequest,
+  res: Response<ApiResponse>
+): Promise<void> => {
   try {
-    const { token, password } = req.body as { token: string; password: string };
     res.status(400).json({ message: 'Legacy route not supported. Please use OTP-based reset.' });
   } catch (error) {
     console.error('Reset password error:', error);
@@ -221,20 +258,22 @@ export const resetPassword = async (req: AuthRequest, res: Response<ApiResponse>
   }
 };
 
-export const googleAuth = async (req: AuthRequest, res: Response): Promise<void> => {
+export const googleAuth = async (_req: AuthRequest, _res: Response): Promise<void> => {
   // This will be handled by passport middleware
 };
 
 export const googleCallback = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user as UserAttributes | undefined;
-    
+
     if (!user) {
       res.redirect(`${settings.frontend.url}/login?error=oauth_failed`);
       return;
     }
 
-    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, { expiresIn: settings.jwt.expiresIn });
+    const token = jwt.sign({ userId: user.id }, settings.jwt.secret, {
+      expiresIn: settings.jwt.expiresIn,
+    });
 
     const userPublic: UserPublic = {
       id: user.id,
@@ -247,10 +286,11 @@ export const googleCallback = async (req: AuthRequest, res: Response): Promise<v
       console.error('Failed to send welcome email for Google OAuth user:', error);
     });
 
-    res.redirect(`${settings.frontend.url}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(userPublic))}`);
+    res.redirect(
+      `${settings.frontend.url}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(userPublic))}`
+    );
   } catch (error) {
     console.error('Google OAuth callback error:', error);
     res.redirect(`${settings.frontend.url}/login?error=oauth_failed`);
   }
 };
-

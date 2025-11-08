@@ -3,7 +3,9 @@ import { sequelize } from '../../../db/connection';
 import { UserAttributes, UserCreationAttributes } from '../../../types';
 import bcrypt from 'bcryptjs';
 
-export interface UserInstance extends Model<UserAttributes, UserCreationAttributes>, UserAttributes {
+export interface UserInstance
+  extends Model<UserAttributes, UserCreationAttributes>,
+    UserAttributes {
   verifyPassword(plainPassword: string): Promise<boolean>;
 }
 
@@ -72,4 +74,3 @@ User.prototype.verifyPassword = async function (plainPassword: string): Promise<
 };
 
 export default User;
-

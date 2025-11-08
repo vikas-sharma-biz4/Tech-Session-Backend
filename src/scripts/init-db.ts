@@ -1,5 +1,4 @@
 import { sequelize, testConnection } from '../db/connection';
-import User from '../features/auth/models/UserModel';
 
 const initializeDatabase = async (): Promise<void> => {
   try {
@@ -23,4 +22,3 @@ if (require.main === module) {
 }
 
 export default initializeDatabase;
-

@@ -17,7 +17,6 @@ import {
   verifySignupOTP,
   resetPasswordWithOTP,
   resetPassword,
-  googleAuth,
   googleCallback,
 } from './controllers';
 
@@ -35,17 +34,25 @@ if (settings.google.clientId && settings.google.clientSecret) {
   router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
   router.get(
     '/google/callback',
-    passport.authenticate('google', { session: false, failureRedirect: `${settings.frontend.url}/login?error=oauth_failed` }),
+    passport.authenticate('google', {
+      session: false,
+      failureRedirect: `${settings.frontend.url}/login?error=oauth_failed`,
+    }),
     googleCallback
   );
 } else {
   router.get('/google', (_req, res) => {
-    res.status(503).json({ message: 'Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.' });
+    res.status(503).json({
+      message:
+        'Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.',
+    });
   });
   router.get('/google/callback', (_req, res) => {
-    res.status(503).json({ message: 'Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.' });
+    res.status(503).json({
+      message:
+        'Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.',
+    });
   });
 }
 
 export default router;
-

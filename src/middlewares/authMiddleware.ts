@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { settings } from '../config/settings';
 import userService from '../features/auth/services';
@@ -33,4 +33,3 @@ export const authMiddleware = async (
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
-
