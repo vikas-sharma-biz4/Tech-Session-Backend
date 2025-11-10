@@ -1,12 +1,18 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, DataType } from 'sequelize';
 import { sequelize } from '../db/connection';
+
+interface ColumnDefinition {
+  type: DataType;
+  allowNull: boolean;
+  unique?: boolean;
+}
 
 const addAllMissingColumns = async (): Promise<void> => {
   try {
     const queryInterface = sequelize.getQueryInterface();
 
     const tableDescription = await queryInterface.describeTable('users');
-    const columnsToAdd: Array<{ name: string; definition: any }> = [];
+    const columnsToAdd: Array<{ name: string; definition: ColumnDefinition }> = [];
 
     if (!tableDescription.reset_token) {
       columnsToAdd.push({
