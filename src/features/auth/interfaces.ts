@@ -1,8 +1,17 @@
-import { UserAttributes, UserPublic, OTPVerificationResult, UserUpdateAttributes } from '../../types';
+import {
+  UserAttributes,
+  UserPublic,
+  OTPVerificationResult,
+  UserUpdateAttributes,
+} from '../../types';
 
 export interface IUserService {
   createUser(userData: { name: string; email: string; password: string }): Promise<UserPublic>;
-  createOAuthUser(userData: { name: string; email: string; googleId: string }): Promise<UserAttributes>;
+  createOAuthUser(userData: {
+    name: string;
+    email: string;
+    googleId: string;
+  }): Promise<UserAttributes>;
   findByEmail(email: string): Promise<UserAttributes | null>;
   findByGoogleId(googleId: string): Promise<UserAttributes | null>;
   findById(id: string): Promise<UserAttributes | null>;
@@ -14,4 +23,3 @@ export interface IUserService {
   clearOTP(id: string): Promise<UserAttributes>;
   verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean>;
 }
-

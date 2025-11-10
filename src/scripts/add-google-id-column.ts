@@ -4,9 +4,9 @@ import { sequelize } from '../db/connection';
 const addGoogleIdColumn = async (): Promise<void> => {
   try {
     const queryInterface = sequelize.getQueryInterface();
-    
+
     const tableDescription = await queryInterface.describeTable('users');
-    
+
     if (!tableDescription.google_id) {
       await queryInterface.addColumn('users', 'google_id', {
         type: DataTypes.STRING,
@@ -17,7 +17,7 @@ const addGoogleIdColumn = async (): Promise<void> => {
     } else {
       console.log('ℹ️  google_id column already exists');
     }
-    
+
     await sequelize.close();
     process.exit(0);
   } catch (error) {
@@ -28,4 +28,3 @@ const addGoogleIdColumn = async (): Promise<void> => {
 };
 
 addGoogleIdColumn();
-

@@ -12,4 +12,3 @@ sequelize
     console.error('❌ Database sync failed:', error);
     process.exit(1);
   });
-

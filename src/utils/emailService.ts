@@ -22,7 +22,11 @@ export const generateOTP = (): string => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const sendOTPEmail = async (email: string, otp: string, name: string = 'User'): Promise<EmailResult> => {
+export const sendOTPEmail = async (
+  email: string,
+  otp: string,
+  name: string = 'User'
+): Promise<EmailResult> => {
   try {
     const mailOptions = {
       from: `"${settings.email.from.name}" <${settings.email.from.address}>`,
@@ -336,7 +340,11 @@ export const sendOTPEmail = async (email: string, otp: string, name: string = 'U
   }
 };
 
-export const sendSignupOTPEmail = async (email: string, otp: string, name: string): Promise<EmailResult> => {
+export const sendSignupOTPEmail = async (
+  email: string,
+  otp: string,
+  name: string
+): Promise<EmailResult> => {
   try {
     const mailOptions = {
       from: `"${settings.email.from.name}" <${settings.email.from.address}>`,

@@ -33,4 +33,3 @@ export const testConnection = async (): Promise<void> => {
 };
 
 export { sequelize };
-
