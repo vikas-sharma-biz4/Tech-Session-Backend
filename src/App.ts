@@ -29,7 +29,6 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error('Request method:', req.method);
   
   if (req.url.includes('/google/callback')) {
-    const { settings } = require('./config/settings');
     res.redirect(`${settings.frontend.url}/login?error=oauth_failed`);
   } else {
     res.status(500).json({ message: 'Something went wrong!' });
