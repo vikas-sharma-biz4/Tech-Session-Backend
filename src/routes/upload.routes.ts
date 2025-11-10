@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { AuthRequest } from '../interfaces/auth.interface';
-import { getIO } from '../socket/socketServer';
+import { getIO } from '../utils/socketServer';
 import File from '../models/FileModel';
 
 const router = Router();
