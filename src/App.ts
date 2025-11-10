@@ -9,7 +9,7 @@ import uploadRoutes from './routes/upload.routes';
 import { settings } from './config/settings';
 import User from './features/auth/models/UserModel';
 import File from './models/FileModel';
-import { initializeSocketIO } from './socket/socketServer';
+import { initializeSocketIO } from './utils/socketServer';
 import './config/passport';
 
 const app: Express = express();
