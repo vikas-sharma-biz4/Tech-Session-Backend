@@ -47,4 +47,3 @@ export const settings = {
     url: envConfig.FRONTEND_URL,
   },
 };
-
