@@ -31,7 +31,7 @@ export const sendOTPEmail = async (
     const mailOptions = {
       from: `"${settings.email.from.name}" <${settings.email.from.address}>`,
       to: email,
-      subject: '🍄 Password Reset - Your Super Code!',
+      subject: '📚 Password Reset - Book Marketplace Verification Code',
       html: `
         <!DOCTYPE html>
         <html>
@@ -202,7 +202,7 @@ export const sendOTPEmail = async (
               font-weight: 600;
             }
             .security-list li:before {
-              content: "🍄";
+              content: "📚";
               position: absolute;
               left: 0;
               font-size: 20px;
@@ -260,9 +260,9 @@ export const sendOTPEmail = async (
         <body>
           <div class="email-wrapper">
             <div class="header-gradient">
-              <div class="security-icon">🍄</div>
-              <h1>SUPER PASSWORD RESET!</h1>
-              <p class="subtitle">Your Power-Up Code is Ready! 🎮</p>
+              <div class="security-icon">📚</div>
+              <h1>PASSWORD RESET REQUEST</h1>
+              <p class="subtitle">Book Marketplace Verification Code 📖</p>
             </div>
             
             <div class="content">
@@ -271,32 +271,32 @@ export const sendOTPEmail = async (
               </div>
               
               <p class="message">
-                🎯 You've requested to reset your password! Use the SUPER CODE below to unlock your account and continue your adventure!
+                📚 You've requested to reset your password for your Book Marketplace account! Use the verification code below to reset your password and continue managing your book listings!
               </p>
               
               <div class="otp-container">
-                <div class="otp-label">⭐ YOUR SUPER CODE ⭐</div>
+                <div class="otp-label">📚 YOUR VERIFICATION CODE 📚</div>
                 <div class="otp-box">${otp}</div>
               </div>
               
               <div class="info-box">
                 <strong>⏰ TIME LIMIT!</strong>
-                <p>This code expires in <strong>10 minutes</strong>! Use it quickly before it disappears! ⚡</p>
+                <p>This code expires in <strong>10 minutes</strong>! Use it quickly to reset your password! ⚡</p>
               </div>
               
               <div class="security-section">
-                <h3>🛡️ POWER-UP TIPS</h3>
+                <h3>🛡️ SECURITY TIPS</h3>
                 <ul class="security-list">
-                  <li>Keep this code secret - like a hidden coin! 🪙</li>
-                  <li>We'll never ask for your code - beware of imposters! 👹</li>
-                  <li>Didn't request this? Secure your account immediately! 🔒</li>
+                  <li>Keep this code secret and never share it with anyone! 🔒</li>
+                  <li>We'll never ask for your code via email or phone - beware of scams! ⚠️</li>
+                  <li>Didn't request this? Please secure your account immediately! 🚨</li>
                 </ul>
               </div>
               
               <div class="divider"></div>
               
               <p class="cta-note">
-                🎮 Enter the code above to reset your password and continue your journey!
+                📖 Enter the code above to reset your password and continue managing your book listings!
               </p>
             </div>
             
@@ -312,16 +312,16 @@ export const sendOTPEmail = async (
       text: `
         Hello ${name},
         
-        You have requested to reset your password. Please use the following One-Time Password (OTP) to verify your identity:
+        You have requested to reset your password for your Book Marketplace account. Please use the following One-Time Password (OTP) to verify your identity:
         
         OTP: ${otp}
         
         This OTP is valid for 10 minutes only.
         
-        If you didn't request this password reset, please ignore this email.
+        If you didn't request this password reset, please ignore this email and consider securing your account.
         
         Best regards,
-        ${settings.email.from.name}
+        Book Marketplace Team
       `,
     };
 
@@ -349,7 +349,7 @@ export const sendSignupOTPEmail = async (
     const mailOptions = {
       from: `"${settings.email.from.name}" <${settings.email.from.address}>`,
       to: email,
-      subject: '⭐ Welcome to the Adventure! Verify Your Email 🎮',
+      subject: '📚 Welcome to Book Marketplace! Verify Your Email',
       html: `
         <!DOCTYPE html>
         <html>
@@ -578,9 +578,9 @@ export const sendSignupOTPEmail = async (
         <body>
           <div class="email-wrapper">
             <div class="header-gradient">
-              <div class="welcome-icon">⭐</div>
-              <h1>WELCOME TO ${settings.email.from.name.toUpperCase()}!</h1>
-              <p class="subtitle">Your Adventure Begins Now! 🎮</p>
+              <div class="welcome-icon">📚</div>
+              <h1>WELCOME TO BOOK MARKETPLACE!</h1>
+              <p class="subtitle">Start Selling & Buying Books Today! 📖</p>
             </div>
             
             <div class="content">
@@ -589,24 +589,24 @@ export const sendSignupOTPEmail = async (
               </div>
               
               <p class="message">
-                🎉 Welcome to the team! To start your epic journey, verify your email address using the SUPER CODE below!
+                📚 Welcome to Book Marketplace! We're excited to have you join our community of book lovers, sellers, and readers. To get started, please verify your email address using the code below!
               </p>
               
               <div class="otp-container">
-                <div class="otp-label">⭐ YOUR VERIFICATION CODE ⭐</div>
+                <div class="otp-label">📚 YOUR VERIFICATION CODE 📚</div>
                 <div class="otp-box">${otp}</div>
               </div>
               
               <div class="info-box">
                 <strong>⏰ TIME LIMIT!</strong>
-                <p>This code expires in <strong>10 minutes</strong>! Use it quickly to unlock your account! ⚡</p>
+                <p>This code expires in <strong>10 minutes</strong>! Use it quickly to activate your account! ⚡</p>
               </div>
               
               <div class="security-section">
-                <h3>🛡️ POWER-UP TIPS</h3>
+                <h3>🛡️ SECURITY TIPS</h3>
                 <ul class="security-list">
-                  <li>Keep this code secret - like a hidden coin! 🪙</li>
-                  <li>We'll never ask for your code - beware of imposters! 👹</li>
+                  <li>Keep this code secret and never share it with anyone! 🔒</li>
+                  <li>We'll never ask for your code via email or phone - beware of scams! ⚠️</li>
                   <li>Didn't create this account? You can safely ignore this email! 🚫</li>
                 </ul>
               </div>
@@ -614,7 +614,7 @@ export const sendSignupOTPEmail = async (
               <div class="divider"></div>
               
               <p class="cta-note">
-                🎮 Enter the code above to verify your email and begin your amazing adventure!
+                📖 Enter the code above to verify your email and start listing or browsing books!
               </p>
             </div>
             
@@ -628,20 +628,25 @@ export const sendSignupOTPEmail = async (
         </html>
       `,
       text: `
-        Welcome to ${settings.email.from.name}!
+        Welcome to Book Marketplace!
         
         Hello ${name},
         
-        Thank you for signing up! To complete your registration, please verify your email address using the One-Time Password (OTP) below:
+        Thank you for signing up for Book Marketplace! To complete your registration, please verify your email address using the One-Time Password (OTP) below:
         
         OTP: ${otp}
         
         This OTP is valid for 10 minutes only.
         
+        Once verified, you'll be able to:
+        - List your books for sale
+        - Browse and search our book collection
+        - Connect with other book lovers
+        
         If you didn't create an account with us, please ignore this email.
         
         Best regards,
-        ${settings.email.from.name}
+        Book Marketplace Team
       `,
     };
 
@@ -665,7 +670,7 @@ export const sendWelcomeEmail = async (email: string, name: string): Promise<Ema
     const mailOptions = {
       from: `"${settings.email.from.name}" <${settings.email.from.address}>`,
       to: email,
-      subject: '🎊 LEVEL UP! Your Account is Ready! 🎮',
+      subject: '📚 Welcome to Book Marketplace! Your Account is Ready',
       html: `
         <!DOCTYPE html>
         <html>
@@ -876,9 +881,9 @@ export const sendWelcomeEmail = async (email: string, name: string): Promise<Ema
         <body>
           <div class="email-wrapper">
             <div class="header-gradient">
-              <div class="success-icon">🎊</div>
-              <h1>LEVEL UP! 🎮</h1>
-              <p class="subtitle">Your Account is Now Active! ⭐</p>
+              <div class="success-icon">📚</div>
+              <h1>ACCOUNT ACTIVATED!</h1>
+              <p class="subtitle">Welcome to Book Marketplace! 📖</p>
             </div>
             
             <div class="content">
@@ -888,29 +893,29 @@ export const sendWelcomeEmail = async (email: string, name: string): Promise<Ema
               
               <p class="message">
                 🎉 Congratulations! Your email has been verified and your account is now fully activated! 
-                You're all set to start your epic adventure!
+                You're all set to start selling or buying books on our marketplace!
               </p>
               
               <div style="text-align: center;">
                 <div class="success-badge">
-                  ⭐ ACCOUNT VERIFIED! ⭐
+                  📚 ACCOUNT VERIFIED! 📚
                 </div>
               </div>
               
               <div class="features-section">
-                <h3>🚀 POWER-UPS UNLOCKED!</h3>
+                <h3>🚀 WHAT YOU CAN DO NOW!</h3>
                 <div class="features-grid">
                   <div class="feature-item">
-                    <div class="feature-icon">🛡️</div>
-                    <div class="feature-text">Secure Account</div>
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-text">Browse Books</div>
                   </div>
                   <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-text">Fast Access</div>
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-text">Sell Books</div>
                   </div>
                   <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-text">Full Features</div>
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-text">Search & Filter</div>
                   </div>
                   <div class="feature-item">
                     <div class="feature-icon">💬</div>
@@ -920,14 +925,14 @@ export const sendWelcomeEmail = async (email: string, name: string): Promise<Ema
               </div>
               
               <div class="cta-section">
-                <h3>💡 NEED HELP?</h3>
-                <p>Our support team is here to help you every step of your journey! 🎮</p>
+                <h3>💡 GET STARTED!</h3>
+                <p>Start listing your books or browse our collection of amazing reads! 📚</p>
               </div>
               
               <div class="divider"></div>
               
               <p class="cta-note">
-                🎮 We're thrilled to have you! Start exploring and make the most of your adventure!
+                📖 We're thrilled to have you! Start exploring our book marketplace and discover your next great read!
               </p>
             </div>
             
@@ -941,21 +946,27 @@ export const sendWelcomeEmail = async (email: string, name: string): Promise<Ema
         </html>
       `,
       text: `
-        Welcome to ${settings.email.from.name}!
+        Welcome to Book Marketplace!
         
         Hello ${name},
         
         Congratulations! Your email has been verified and your account is now fully activated.
-        You're all set to explore everything we have to offer.
+        You're all set to start selling or buying books on our marketplace!
         
-        Your account is now active and ready to use. You can access all features and start your journey with us.
+        Your account is now active and ready to use. You can:
+        - List your books for sale
+        - Browse and search our extensive book collection
+        - Filter books by type, condition, price, and more
+        - Connect with other book lovers
         
         If you have any questions or need assistance, our support team is here to help you every step of the way.
         
-        We're thrilled to have you as part of our community!
+        We're thrilled to have you as part of our book marketplace community!
+        
+        Happy reading and selling!
         
         Best regards,
-        ${settings.email.from.name}
+        Book Marketplace Team
       `,
     };
 

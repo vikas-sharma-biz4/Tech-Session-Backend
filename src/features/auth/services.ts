@@ -13,6 +13,7 @@ class UserService implements IUserService {
     name: string;
     email: string;
     password: string;
+    role?: 'buyer' | 'seller' | 'admin';
   }): Promise<UserPublic> {
     const existingUser = await User.findOne({ where: { email: userData.email } });
     if (existingUser) {
@@ -26,6 +27,7 @@ class UserService implements IUserService {
       name: userData.name,
       email: userData.email,
       password: hashedPassword,
+      role: userData.role || 'buyer',
     });
 
     const { password: _, ...userWithoutPassword } = user.toJSON();
@@ -36,6 +38,7 @@ class UserService implements IUserService {
     name: string;
     email: string;
     googleId: string;
+    role?: 'buyer' | 'seller' | 'admin';
   }): Promise<UserAttributes> {
     const existingUser = await User.findOne({ where: { email: userData.email } });
     if (existingUser) {
@@ -47,6 +50,7 @@ class UserService implements IUserService {
       email: userData.email,
       password: undefined, // OAuth users don't need a password
       googleId: userData.googleId,
+      role: userData.role || 'buyer',
     });
 
     return user.toJSON();

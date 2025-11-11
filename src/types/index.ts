@@ -1,3 +1,5 @@
+export type UserRole = 'buyer' | 'seller' | 'admin';
+
 export interface UserAttributes {
   id: string;
   name: string;
@@ -8,6 +10,8 @@ export interface UserAttributes {
   otp: string | null;
   otpExpiry: Date | null;
   googleId: string | null;
+  profile_picture_url?: string | null;
+  role?: UserRole;
   created_at?: Date;
   updated_at?: Date;
 }
@@ -17,6 +21,7 @@ export interface UserCreationAttributes {
   email: string;
   password?: string;
   googleId?: string;
+  role?: UserRole;
 }
 
 export interface UserUpdateAttributes {
@@ -28,12 +33,16 @@ export interface UserUpdateAttributes {
   otp?: string | null;
   otpExpiry?: Date | null;
   googleId?: string | null;
+  profile_picture_url?: string | null;
+  role?: UserRole;
 }
 
 export interface UserPublic {
   id: string;
   name: string;
   email: string;
+  profile_picture_url?: string | null;
+  role?: UserRole;
   created_at?: Date;
   updated_at?: Date;
 }

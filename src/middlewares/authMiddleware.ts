@@ -11,7 +11,13 @@ export const authMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    // Try to get token from Authorization header first
+    let token = req.header('Authorization')?.replace('Bearer ', '');
+
+    // If no token in header, try to get from cookies (for httpOnly cookie support)
+    if (!token && req.cookies) {
+      token = req.cookies.token;
+    }
 
     if (!token) {
       res.status(401).json({ message: 'No token, authorization denied' });

@@ -21,7 +21,7 @@ if (settings.google.clientId && settings.google.clientSecret) {
             return done(new Error('No email found in Google profile'), undefined);
           }
 
-          let user = await userService.findByGoogleId(id);
+          const user = await userService.findByGoogleId(id);
 
           if (user) {
             return done(null, user);
@@ -41,6 +41,8 @@ if (settings.google.clientId && settings.google.clientSecret) {
             googleId: id,
           });
 
+          // Mark as new user by adding a flag (we'll check created_at in callback)
+          // The flag is used in the callback controller to detect new OAuth users
           return done(null, newUser);
         } catch (error) {
           console.error('Google OAuth strategy error:', error);

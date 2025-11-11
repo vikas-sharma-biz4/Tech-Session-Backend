@@ -25,7 +25,9 @@ export const signup = async (
   res: Response<AuthResponse | ApiResponse>
 ): Promise<void> => {
   try {
-    const { name, email, password } = req.body as SignupRequest;
+    const { name, email, password, role } = req.body as SignupRequest & {
+      role?: 'buyer' | 'seller' | 'admin';
+    };
 
     const existingUser = await userService.findByEmail(email);
 
@@ -51,7 +53,7 @@ export const signup = async (
       return;
     }
 
-    const user = await userService.createUser({ name, email, password });
+    const user = await userService.createUser({ name, email, password, role: role || 'buyer' });
 
     const otp = generateOTP();
     const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MS);
@@ -106,6 +108,8 @@ export const login = async (
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role || 'buyer',
+      profile_picture_url: user.profile_picture_url || null,
       created_at: user.created_at,
     };
 
@@ -208,6 +212,8 @@ export const verifySignupOTP = async (
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role || 'buyer',
+      profile_picture_url: user.profile_picture_url || null,
       created_at: user.created_at,
     };
 
@@ -262,6 +268,17 @@ export const googleAuth = async (_req: AuthRequest, _res: Response): Promise<voi
   // This will be handled by passport middleware
 };
 
+export const logout = async (_req: AuthRequest, res: Response<ApiResponse>): Promise<void> => {
+  try {
+    // Logout is handled by clearing the cookie on the frontend
+    // This endpoint just confirms the logout
+    res.json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 export const googleCallback = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user as UserAttributes | undefined;
@@ -275,20 +292,36 @@ export const googleCallback = async (req: AuthRequest, res: Response): Promise<v
       expiresIn: settings.jwt.expiresIn,
     });
 
+    // Check if this is a new user (created within last 5 seconds)
+    const isNewUser =
+      user.created_at && new Date().getTime() - new Date(user.created_at).getTime() < 5000;
+
     const userPublic: UserPublic = {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role || 'buyer',
+      profile_picture_url: user.profile_picture_url || null,
       created_at: user.created_at,
     };
 
-    sendWelcomeEmail(user.email, user.name).catch((error: Error) => {
-      console.error('Failed to send welcome email for Google OAuth user:', error);
-    });
+    // Only send welcome email for new users
+    if (isNewUser) {
+      sendWelcomeEmail(user.email, user.name).catch((error: Error) => {
+        console.error('Failed to send welcome email for Google OAuth user:', error);
+      });
+    }
 
-    res.redirect(
-      `${settings.frontend.url}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(userPublic))}`
-    );
+    // Redirect to Next.js frontend API route that will set httpOnly cookie
+    const frontendUrl = settings.frontend.url;
+    const redirectUrl = new URL(`${frontendUrl}/api/auth/oauth-callback`);
+    redirectUrl.searchParams.set('token', token);
+    redirectUrl.searchParams.set('user', encodeURIComponent(JSON.stringify(userPublic)));
+    if (isNewUser) {
+      redirectUrl.searchParams.set('newUser', 'true');
+    }
+
+    res.redirect(redirectUrl.toString());
   } catch (error) {
     console.error('Google OAuth callback error:', error);
     res.redirect(`${settings.frontend.url}/login?error=oauth_failed`);

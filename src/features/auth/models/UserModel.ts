@@ -60,6 +60,15 @@ const User = sequelize.define<UserInstance>(
       allowNull: true,
       unique: true,
     },
+    profile_picture_url: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
+    role: {
+      type: DataTypes.ENUM('buyer', 'seller', 'admin'),
+      allowNull: false,
+      defaultValue: 'buyer',
+    },
   },
   {
     tableName: 'users',
