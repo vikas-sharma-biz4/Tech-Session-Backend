@@ -22,9 +22,16 @@ export const getBooks = async (req: AuthRequest, res: Response<ApiResponse>): Pr
 
     const result = await bookService.getBooks(filters);
 
+    // Restructure response: pagination metadata at top level, books nested in data
     res.json({
       message: 'Books retrieved successfully',
-      data: result,
+      data: {
+        data: result.books, // Books array nested in data
+        total: result.total,
+        page: result.page,
+        limit: result.limit,
+        totalPages: result.totalPages,
+      },
     });
   } catch (error) {
     console.error('Get books error:', error);
